@@ -1,3 +1,11 @@
+## TODO
+
+- Cargar json configuración FB desde un archivo config.json para poder versionar firebase.js
+- Popup edición
+- Generar CSV
+- Eliminar todo
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
