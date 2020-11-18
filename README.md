@@ -1,9 +1,9 @@
 ## TODO
 
-- Cargar json configuración FB desde un archivo config.json para poder versionar firebase.js
 - Popup edición
-- Generar CSV
-- Eliminar todo
+- Nombre del día en tabla para mostrar
+- Crear repositorio en github. Está solamente local.
+- Instalar react-bootstrap con npm.
 
 
 # Getting Started with Create React App

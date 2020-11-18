@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { createExpense, updateExpense } from './firebase';
 import { getCurrentDate } from './utils';
 import { db } from './firebase';
@@ -34,7 +35,9 @@ class Expense extends Component {
         users: users,
       });
     });
-    db.collection('categories').where('type', '==', 'Egreso').orderBy('group').orderBy('category').get().then((dataSnapshot) => {
+    db.collection('categories').where('type', '==', 'Egreso')
+      .orderBy('group').orderBy('category').get().then((dataSnapshot) => 
+    {
       const groups = {};
       const categories = [];
       dataSnapshot.forEach((category) => {
@@ -66,11 +69,20 @@ class Expense extends Component {
 
   async handleSumbit(event) {
     event.preventDefault();
+    const expenseData = {
+      date: this.state.date,
+      user: this.state.user,
+      value: this.state.value,
+      group: this.state.group,
+      category: this.state.category,
+      comment: this.state.comment,
+    };
     if (this.props.expense) {
-      await updateExpense(this.props.expense.id, this.state);
+      await updateExpense(this.props.expense.id, expenseData);
     } else {
-      await createExpense(this.state);
+      await createExpense(expenseData);
     }
+    this.props.history.push('/');
   }
 
   handleClearCategory() {
@@ -107,7 +119,7 @@ class Expense extends Component {
           <span className="sr-only">Loading...</span>
         </div> :
         <div className="row justify-content-center">
-          <form onSubmit={ this.handleSumbit } method="POST" className="col-sm-8 col-md-6 col-lg-4">
+          <form onSubmit={ this.handleSumbit } className="col-sm-8 col-md-6 col-lg-4">
             <fieldset>
               <legend>{ this.props.expense ? 'Modificar gasto' : 'Nuevo gasto' }</legend>
               <div className="form-group">
@@ -160,4 +172,4 @@ class Expense extends Component {
   }
 }
 
-export default Expense;
+export default withRouter(Expense);

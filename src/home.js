@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { Link } from "react-router-dom";
-import { db } from './firebase';
+import { db, expensesCollection, deleteExpense, deleteAllExpenses } from './firebase';
+import ExcelExporter from './excel-exporter';
 
 
 class Home extends Component {
@@ -11,11 +12,16 @@ class Home extends Component {
       expenses: [],
       loading: false,
     };
+    this.handleEditRecord = this.handleEditRecord.bind(this);
+    //this.handleDeleteRecord = this.handleDeleteRecord.bind(this);
+    this.handleDeleteAll = this.handleDeleteAll.bind(this);
   }
 
-  async componentDidMount() {
-    this.setState({loading: true});
-    db.collection('expenses').get().then((dataSnapshot) => {
+  async getExpenses() {
+    db.collection(expensesCollection)
+      .orderBy('date', 'desc').orderBy('timestamp', 'desc')
+      .get().then((dataSnapshot) =>
+    {
       const expenses = [];
       dataSnapshot.forEach((expense) => {
         expenses.push({
@@ -30,30 +36,84 @@ class Home extends Component {
     });
   }
 
+  async componentDidMount() {
+    this.setState({loading: true});
+    await this.getExpenses();
+  }
+
+  handleEditRecord(event) {
+    event.preventDefault();
+    //alert(event.target); En target aparece el link con la url del sitio web seguido por el id de cada fila
+    alert("Pendiente implementación");
+  }
+
+  async handleDeleteRecord(id, event) {
+    event.preventDefault();
+    var confirmDeletion = window.confirm("¿Eliminar el gasto seleccionado?");
+    if (confirmDeletion) {
+      this.setState({loading: true});
+      await deleteExpense(id);
+      await this.getExpenses();
+    }
+  }
+
+  async handleDeleteAll(event) {
+    event.preventDefault();
+    var confirmDeletion = window.confirm("¿Eliminar todos los gastos?");
+    if (confirmDeletion) {
+      this.setState({loading: true});
+      await deleteAllExpenses();
+      await this.getExpenses();
+    }
+  }
+
   render() {
     const expenses = this.state.expenses;
 
-    var expensesFields = ["date","user","group","category","value","comment"];
+    const expensesFields = [
+      {field: "date", label: "Fecha"},
+      {field: "user", label: "Responsable"},
+      {field: "value", label: "Valor"},
+      {field: "group", label: "Agrupador"},
+      {field: "category", label: "Categoría"},
+      {field: "comment", label: "Observaciones"},
+    ];
     const expensesHeader = expensesFields.map((field) => {
       return(
-        <th key={ field } scope="col">{ field }</th>
+        <th key={ field.field } scope="col">{ field.label }</th>
       );
     });
 
     const expensesRows = expenses.map((expense) => {
       const expenseData = expensesFields.map((field) => {
-        const value = expense[field];
+        const value = expense[field.field];
         return(
-          <td key={expense.id+"_"+field}>{value}</td>
+          <td key={expense.id+"_"+field.field}>{value}</td>
         );
       });
       
+      /*return(
+        <tr key={expense.id}>
+          {expenseData}
+          <td key={expense.id+"_editar"}><a href={ expense.id } onClick={ this.handleEditRecord } className="badge badge-secondary">Editar</a></td>
+        </tr>
+      );*/
       return(
         <tr key={expense.id}>
           {expenseData}
-          <td key={expense.id+"_editar"}><a href="" className="badge badge-secondary">Editar</a></td>
+          <td key={expense.id+"_eliminar"}><a href={ expense.id } onClick={ (e) => this.handleDeleteRecord(expense.id, e) } className="badge badge-secondary">Eliminar</a></td>
         </tr>
       );
+    });
+
+    const expensesForDownload = expenses.slice().sort((a, b) => {
+      if (a['date'] < b['date']) {
+        return -1;
+      } else if (a['date'] > b['date']) {
+        return 1;
+      } else {
+        return 0;
+      }
     });
 
     return (
@@ -62,70 +122,31 @@ class Home extends Component {
         <br/>
         <nav className="nav nav-pills">
           <Link to="/new" className="nav-link active">Nuevo gasto</Link>
-          <Link to="/download" className="nav-link">Descargar</Link>
-          <Link to="/delete_all" className="nav-link">Eliminar todo</Link>
+          <ExcelExporter data={ expensesForDownload } fields={ expensesFields } />
+          <button onClick={ this.handleDeleteAll } className="btn btn-link">Eliminar todo</button>
         </nav>
         <br/>
         <br/>
         {this.state.loading ? <div className="spinner-border text-success" role="status">
             <span className="sr-only">Loading...</span>
-          </div> : ""}
-        <div className="table-responsive">
-          <table className="table table-sm table-hover">
-            <thead>
-              <tr>
-                { expensesHeader }
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              { expensesRows }
-            </tbody>
-          </table>
-        </div>
+          </div> :
+          <div className="table-responsive">
+            <table className="table table-sm table-hover">
+              <thead>
+                <tr>
+                  { expensesHeader }
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                { expensesRows }
+              </tbody>
+            </table>
+          </div>
+        }
       </div>
     );
   }
 }
-
-/*class Home extends Component {
-
-  constructor() {
-    super();
-    this.state = {
-      users: [],
-    };
-  }
-
-  componentDidMount() {
-    db.collection('users').get().then((dataSnapshot) => {
-      const users = [];
-      dataSnapshot.forEach((user) => {
-        users.push({
-          id: user.id,
-          name: user.data().name,
-        });
-      });
-      this.setState({
-        users: users,
-      });
-    });
-  }
-
-  render() {
-    const users = this.state.users;
-    const usersUI = users.map((user) => {
-      return(
-        <li key={user.id}>{user.name}</li>
-      );
-    });
-    return (
-      <div className="App">
-        <h1>Lista de usuarios</h1>
-        <ol>{usersUI}</ol>
-      </div>
-    );
-  }
-}*/
 
 export default Home;
