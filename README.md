@@ -3,8 +3,7 @@
 - Revisar los await porque no funcionan 100% bien al eliminar un registro único
 - Popup edición
 - Nombre del día en tabla para mostrar
-- Crear repositorio en github. Está solamente local.
-- Instalar react-bootstrap con npm.
+- Instalar react-bootstrap con npm
 
 
 # Getting Started with Create React App
