@@ -1,5 +1,6 @@
 ## TODO
 
+- Revisar los await porque no funcionan 100% bien al eliminar un registro único
 - Popup edición
 - Nombre del día en tabla para mostrar
 - Crear repositorio en github. Está solamente local.

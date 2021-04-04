@@ -35,7 +35,7 @@ class Expense extends Component {
         users: users,
       });
     });
-    db.collection('categories').where('type', '==', 'Egreso')
+    db.collection('categories')
       .orderBy('group').orderBy('category').get().then((dataSnapshot) => 
     {
       const groups = {};
