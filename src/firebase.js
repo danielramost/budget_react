@@ -13,7 +13,9 @@ try {
 
 export const auth = firebase.auth;
 export const db = firebase.firestore();
-export const expensesCollection = "expenses";
+export const EXPENSES_COLLECTION = "expenses";
+export const CATEGORIES_COLLECTION = "categories";
+export const CATEGORY_GROUPS_COLLECTION = "category_groups";
 
 export function signInWithGoogle() {
   const provider = new auth.GoogleAuthProvider();
@@ -24,35 +26,33 @@ export function logout() {
   return auth().signOut();
 }
 
-function formatDataForDatabase(data) {
+export async function createRecord(collection, data) {
+  const docRef = db.collection(collection);
+  docRef.add(addTimestampProp(data));
+}
+
+function addTimestampProp(data) {
   return {
     'timestamp': firebase.firestore.FieldValue.serverTimestamp(),
     ...data,
-    'value': parseInt(data.value),
-    'date': data.date,
   };
 }
 
-export async function createExpense(data) {
-  const docRef = db.collection(expensesCollection);
-  docRef.add(formatDataForDatabase(data));
+export async function updateRecord(collection, id, data) {
+  const docRef = db.collection(collection).doc(id);
+  docRef.set(addTimestampProp(data));
 }
 
-export async function updateExpense(id, data) {
-  const docRef = db.collection(expensesCollection).doc(id);
-  docRef.set(formatDataForDatabase(data));
-}
-
-export async function deleteExpense(id) {
-  const docRef = db.collection(expensesCollection).doc(id);
+export async function deleteRecord(collection, id) {
+  const docRef = db.collection(collection).doc(id);
   docRef.delete();
 }
 
 export async function deleteAllExpenses() {
-  const expensesSnapshot = await db.collection(expensesCollection).get();
+  const expensesSnapshot = await db.collection(EXPENSES_COLLECTION).get();
   const deletions = [];
   expensesSnapshot.forEach((expense) => {
-    const docRef = db.collection(expensesCollection).doc(expense.id);
+    const docRef = db.collection(EXPENSES_COLLECTION).doc(expense.id);
     deletions.push(docRef.delete());
   });
 

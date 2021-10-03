@@ -1,10 +1,42 @@
 ## TODO
 
 - Revisar los await porque no funcionan 100% bien al eliminar un registro único
-- Popup edición
 - Nombre del día en tabla para mostrar
 - Instalar react-bootstrap con npm
+- Cambiar tabla de registros para que se vea bien en pantallas pequeñas
 
+# Simple React app to record daily expenses
+
+This app's purpose is to serve as a record list for daily expenses. Each record contains a date, category, subcategory, amount and optional notes.
+
+The app provides a button for downloading the records as an Excel file and another button to delete all records. It's intended use is to record daily expenses and then export them to another app to keep a monthly budget. That's why the records can be deleted, so the app would store only the expenses pending for export to a budget file.
+
+The app uses Firebase as backend.
+
+# Development environment setup
+
+```bash
+cd /path/of/repo
+mkdir `src/config/`
+touch `src/config/firebase.json`
+```
+
+Then, create a web app on Firebase Console and copy the Firebase config into the `firebase.json` file. It's required to format the configuration as JSON. The contents of `firebase.json` should look like the following snippet:
+
+```json
+{
+  "apiKey": "the_api_key",
+  "authDomain": "firebase_app_name.firebaseapp.com",
+  "databaseURL": "https://firebase_app_name.firebaseio.com",
+  "projectId": "firebase_app_name",
+  "storageBucket": "firebase_app_name.appspot.com",
+  "messagingSenderId": "123456",
+  "appId": "the_app_id",
+  "measurementId": "ABCDEF"
+}
+```
+
+Firebase Authentication is used to control the access to the app. So, the users should be added to Firebase Auth using Firebase Console before they can log into the app. The only method for authentication allowed is Google.
 
 # Getting Started with Create React App
 

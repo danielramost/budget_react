@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Link } from "react-router-dom";
-import { db, expensesCollection, deleteExpense, deleteAllExpenses } from './firebase';
+import { db, EXPENSES_COLLECTION, deleteRecord, deleteAllExpenses } from './firebase';
 import ExcelExporter from './excel-exporter';
 
 
@@ -12,13 +12,12 @@ class Home extends Component {
       expenses: [],
       loading: false,
     };
-    this.handleEditRecord = this.handleEditRecord.bind(this);
-    //this.handleDeleteRecord = this.handleDeleteRecord.bind(this);
+    this.handleDeleteRecord = this.handleDeleteRecord.bind(this);
     this.handleDeleteAll = this.handleDeleteAll.bind(this);
   }
 
   async getExpenses() {
-    db.collection(expensesCollection)
+    db.collection(EXPENSES_COLLECTION)
       .orderBy('date', 'desc').orderBy('timestamp', 'desc')
       .get().then((dataSnapshot) =>
     {
@@ -41,18 +40,12 @@ class Home extends Component {
     await this.getExpenses();
   }
 
-  handleEditRecord(event) {
-    event.preventDefault();
-    //alert(event.target); En target aparece el link con la url del sitio web seguido por el id de cada fila
-    alert("Pendiente implementación");
-  }
-
   async handleDeleteRecord(id, event) {
     event.preventDefault();
     var confirmDeletion = window.confirm("¿Eliminar el gasto seleccionado?");
     if (confirmDeletion) {
       this.setState({loading: true});
-      await deleteExpense(id);
+      await deleteRecord(EXPENSES_COLLECTION, id);
       await this.getExpenses();
     }
   }
@@ -92,16 +85,11 @@ class Home extends Component {
         );
       });
       
-      /*return(
-        <tr key={expense.id}>
-          {expenseData}
-          <td key={expense.id+"_editar"}><a href={ expense.id } onClick={ this.handleEditRecord } className="badge badge-secondary">Editar</a></td>
-        </tr>
-      );*/
       return(
         <tr key={expense.id}>
           {expenseData}
-          <td key={expense.id+"_eliminar"}><a href={ expense.id } onClick={ (e) => this.handleDeleteRecord(expense.id, e) } className="badge badge-secondary">Eliminar</a></td>
+          <td key={expense.id + "_editar"}><Link to={"expenses/" + expense.id} className="badge badge-secondary">Editar</Link></td>
+          <td key={expense.id + "_eliminar"}><a href={ expense.id } onClick={ (e) => this.handleDeleteRecord(expense.id, e) } className="badge badge-secondary">Eliminar</a></td>
         </tr>
       );
     });
@@ -121,9 +109,10 @@ class Home extends Component {
         <h2>Gastos recientes</h2>
         <br/>
         <nav className="nav nav-pills">
-          <Link to="/new" className="nav-link active">Nuevo gasto</Link>
+          <Link to="/expenses/new" className="nav-link active">Nuevo gasto</Link>
           <ExcelExporter data={ expensesForDownload } fields={ expensesFields } />
           <button onClick={ this.handleDeleteAll } className="btn btn-link">Eliminar todo</button>
+          <Link to="/categories" className="btn btn-link">Categorías</Link>
         </nav>
         <br/>
         <br/>

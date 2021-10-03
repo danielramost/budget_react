@@ -10,6 +10,8 @@ import { auth } from './firebase';
 import Login from './login';
 import Home from './home';
 import Expense from './expense';
+import Categories from './categories';
+import Category from './category';
 
 
 function PrivateRoute({ component: Component, authenticated, ...rest }) {
@@ -101,9 +103,29 @@ class App extends Component {
               component={Home}
             />
             <PrivateRoute
-              path="/new"
+              path="/expenses/new"
               authenticated={this.state.authenticated}
               component={Expense}
+            />
+            <PrivateRoute
+              path="/expenses/:id"
+              authenticated={this.state.authenticated}
+              component={Expense}
+            />
+            <PrivateRoute
+              exact path="/categories"
+              authenticated={this.state.authenticated}
+              component={Categories}
+            />
+            <PrivateRoute
+              path="/categories/new"
+              authenticated={this.state.authenticated}
+              component={Category}
+            />
+            <PrivateRoute
+              path="/categories/:id"
+              authenticated={this.state.authenticated}
+              component={Category}
             />
           </Switch>
         </Router>
