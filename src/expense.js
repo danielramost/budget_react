@@ -184,7 +184,7 @@ class Expense extends Component {
                   </label>
                 </div>
                 <div className="btn-group" role="group" aria-label="Form button group">
-                  <input type="submit" value="Guardar" className="btn btn-primary mr-3" />
+                  <input type="submit" value="Guardar" className="btn btn-primary me-5" />
                   <button onClick={this.handleCancel} className="btn btn-outline-secondary">Cancelar</button>
                 </div>
               </fieldset>

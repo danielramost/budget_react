@@ -11,6 +11,8 @@ class Home extends Component {
     this.state = {
       expenses: [],
       loading: false,
+      width: 0,
+      height: 0,
     };
     this.handleDeleteRecord = this.handleDeleteRecord.bind(this);
     this.handleDeleteAll = this.handleDeleteAll.bind(this);
@@ -36,9 +38,19 @@ class Home extends Component {
   }
 
   async componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions);
+    this.updateDimensions();
     this.setState({loading: true});
     await this.getExpenses();
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
+  }
+
+  updateDimensions = () => {
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
+  };
 
   async handleDeleteRecord(id, event) {
     event.preventDefault();
@@ -94,6 +106,27 @@ class Home extends Component {
       );
     });
 
+    const expensesCompactRows = expenses.map((expense) => {
+      return(
+        <div className="row mb-2 p-2 border" key={expense.id}>
+          <div className="col">
+            <h6 className="fw-bold">{expense.date}</h6>
+            <h6><span className="fst-italic">Agrupador: </span>{expense.group}</h6>
+            <h6><span className="fst-italic">Categoría: </span>{expense.category}</h6>
+            <p><span className="fst-italic">Valor: </span>{"$" + expense.value}</p>
+          </div>
+          <div className="col-4 align-self-center">
+            <div className="row mb-4">
+              <Link to={"expenses/" + expense.id} className="btn btn-secondary">Editar</Link>
+            </div>
+            <div className="row">
+              <a href={expense.id} onClick={(e) => this.handleDeleteRecord(expense.id, e)} className="btn btn-secondary">Eliminar</a>
+            </div>
+          </div>
+        </div>
+      );
+    });
+
     const expensesForDownload = expenses.slice().sort((a, b) => {
       if (a['date'] < b['date']) {
         return -1;
@@ -119,6 +152,11 @@ class Home extends Component {
         {this.state.loading ? <div className="spinner-border text-success" role="status">
             <span className="sr-only">Loading...</span>
           </div> :
+          this.state.width < 600 ?
+            <div className="container">
+              { expensesCompactRows }
+            </div>
+            :
           <div className="table-responsive">
             <table className="table table-sm table-hover">
               <thead>
