@@ -1,10 +1,3 @@
-## TODO
-
-- Revisar los await porque no funcionan 100% bien al eliminar un registro único
-- Nombre del día en tabla para mostrar
-- Instalar react-bootstrap con npm
-- Cambiar tabla de registros para que se vea bien en pantallas pequeñas
-
 # Simple React app to record daily expenses
 
 This app's purpose is to serve as a record list for daily expenses. Each record contains a date, category, subcategory, amount and optional notes.

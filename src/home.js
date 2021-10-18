@@ -111,9 +111,11 @@ class Home extends Component {
         <div className="row mb-2 p-2 border" key={expense.id}>
           <div className="col">
             <h6 className="fw-bold">{expense.date}</h6>
-            <h6><span className="fst-italic">Agrupador: </span>{expense.group}</h6>
-            <h6><span className="fst-italic">Categoría: </span>{expense.category}</h6>
-            <p><span className="fst-italic">Valor: </span>{"$" + expense.value}</p>
+            <p>
+              <span className="fw-bold fst-italic">Agrupador: </span>{expense.group}<br/>
+              <span className="fw-bold fst-italic">Categoría: </span>{expense.category}<br/>
+              <span className="fw-bold fst-italic">Valor: </span>{"$" + expense.value}
+            </p>
           </div>
           <div className="col-4 align-self-center">
             <div className="row mb-4">
