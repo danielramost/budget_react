@@ -6,12 +6,12 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import { auth } from "./firebase";
-import Login from "./login";
-import Home from "./home";
-import Expense from "./expense";
-import Categories from "./categories";
-import Category from "./category";
+import { auth } from "./services/firebase";
+import Login from "./components/login";
+import Expenses from "./components/expenses";
+import Expense from "./components/expense";
+import Categories from "./components/categories";
+import Category from "./components/category";
 import NavBar from "./components/navBar";
 import PrivateRoute from "./components/privateRoute";
 import Logout from "./components/logout";
@@ -81,9 +81,10 @@ class App extends Component {
                 component={Logout}
               />
               <PrivateRoute
+                exact
                 path="/expenses"
                 authenticated={this.state.authenticated}
-                component={Home}
+                component={Expenses}
               />
               <PrivateRoute
                 path="/expenses/new"

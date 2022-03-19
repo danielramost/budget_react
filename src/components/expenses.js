@@ -5,12 +5,12 @@ import {
   EXPENSES_COLLECTION,
   deleteRecord,
   deleteAllExpenses,
-} from "./firebase";
-import ExcelExporter from "./excel-exporter";
+} from "../services/firebase";
+import ExcelExporter from "../utils/excel-exporter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
-class Home extends Component {
+class Expenses extends Component {
   constructor() {
     super();
     this.state = {
@@ -226,4 +226,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default Expenses;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { logOut } from "../firebase";
+import { logOut } from "../services/firebase";
 
 const Logout = () => {
   logOut();

@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { db, createRecord, updateRecord, EXPENSES_COLLECTION } from './firebase';
-import { getCurrentDate } from './utils';
+import { db, createRecord, updateRecord, EXPENSES_COLLECTION } from '../services/firebase';
+import { getCurrentDate } from '../utils/utils';
 
 
 class Expense extends Component {

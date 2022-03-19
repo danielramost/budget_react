@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { signInWithGoogle } from "./firebase";
+import { signInWithGoogle } from "../services/firebase";
 
 export default class Login extends Component {
   constructor() {

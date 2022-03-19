@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { db, createRecord, updateRecord, CATEGORIES_COLLECTION } from './firebase';
+import { db, createRecord, updateRecord, CATEGORIES_COLLECTION } from '../services/firebase';
 
 
 class Category extends Component {

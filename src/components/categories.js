@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { Link } from "react-router-dom";
-import { db, CATEGORIES_COLLECTION, deleteRecord } from './firebase';
+import { db, CATEGORIES_COLLECTION, deleteRecord } from '../services/firebase';
 
 
 class Categories extends Component {
