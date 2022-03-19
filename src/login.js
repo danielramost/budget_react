@@ -12,7 +12,11 @@ export default class Login extends Component {
 
   async googleSignIn() {
     try {
-      await signInWithGoogle();
+      const result = await signInWithGoogle();
+      if (result && result.user) {
+        console.log(result.user.displayName);
+        this.props.history.replace("/");
+      }
     } catch (error) {
       this.setState({ error: error.message });
     }

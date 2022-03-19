@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { db, CATEGORIES_COLLECTION, deleteRecord } from './firebase';
 
 
@@ -82,12 +82,7 @@ class Categories extends Component {
 
     return (
       <div className="container">
-        <h2>Categorías</h2>
-        <br />
-        <nav className="nav nav-pills">
-          <Link to="/categories/new" className="nav-link active">Nueva categoría</Link>
-          <Link to="/home" className="btn btn-link">Gastos recientes</Link>
-        </nav>
+        <Link to="/categories/new" className="btn btn-primary">Nueva categoría</Link>
         <br />
         <br />
         {this.state.loading ? <div className="spinner-border text-success" role="status">
@@ -112,4 +107,4 @@ class Categories extends Component {
   }
 }
 
-export default withRouter(Categories);
+export default Categories;

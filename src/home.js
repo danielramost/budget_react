@@ -197,20 +197,9 @@ class Home extends Component {
 
     return (
       <div className="container">
-        <h2>Gastos recientes</h2>
-        <br />
-        <nav className="nav nav-pills">
-          <Link to="/expenses/new" className="nav-link active">
-            Nuevo gasto
-          </Link>
-          <ExcelExporter data={expensesForDownload} fields={expensesFields} />
-          <button onClick={this.handleDeleteAll} className="btn btn-link">
-            Eliminar todo
-          </button>
-          <Link to="/categories" className="btn btn-link">
-            Categorías
-          </Link>
-        </nav>
+        <Link to="/expenses/new" className="btn btn-primary">
+          Nuevo gasto
+        </Link>
         <br />
         <br />
         {this.state.loading ? (

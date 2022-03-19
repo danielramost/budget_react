@@ -22,7 +22,7 @@ export function signInWithGoogle() {
   return auth().signInWithPopup(provider);
 }
 
-export function logout() {
+export function logOut() {
   return auth().signOut();
 }
 
