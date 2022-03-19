@@ -74,8 +74,8 @@ class Categories extends Component {
       return (
         <tr key={category.id}>
           {categoryData}
-          <td key={category.id + "_editar"}><Link to={"categories/" + category.id} className="badge badge-secondary">Editar</Link></td>
-          <td key={category.id + "_eliminar"}><a href={category.id} onClick={(e) => this.handleDeleteRecord(category.id, e)} className="badge badge-secondary">Eliminar</a></td>
+          <td key={category.id + "_edit"}><Link to={"categories/" + category.id} className="badge badge-secondary">Editar</Link></td>
+          <td key={category.id + "_delete"}><a href={category.id} onClick={(e) => this.handleDeleteRecord(category.id, e)} className="badge badge-secondary">Eliminar</a></td>
         </tr>
       );
     });
