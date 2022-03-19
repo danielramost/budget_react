@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import Form from './common/form';
 import { db, createRecord, updateRecord, EXPENSES_COLLECTION } from '../services/firebase';
 import { getCurrentDate } from '../utils/utils';
 
@@ -12,13 +13,15 @@ class Expense extends Component {
       users: [],
       groups: [],
       categories: [],
-      id: props.match.params.id ? props.match.params.id : "",
-      date: getCurrentDate(),
-      user: "",
-      value: "",
-      group: "",
-      category: "",
-      comment: "",
+      data:{
+        id: props.match.params.id ? props.match.params.id : "",
+        date: getCurrentDate(),
+        user: "",
+        value: "",
+        group: "",
+        category: "",
+        comment: "",
+      },
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleGroupChange = this.handleGroupChange.bind(this);
@@ -53,18 +56,14 @@ class Expense extends Component {
           categories: categories,
         });
       });
-    if (this.state.id) {
-      db.collection(EXPENSES_COLLECTION).doc(this.state.id)
+    if (this.state.data.id) {
+      db.collection(EXPENSES_COLLECTION).doc(this.state.data.id)
         .get().then((dataSnapshot) => {
           if (dataSnapshot.exists) {
             const expenseData = dataSnapshot.data();
+            expenseData.id = this.state.data.id;
             this.setState({
-              date: expenseData.date,
-              user: expenseData.user,
-              value: expenseData.value,
-              group: expenseData.group,
-              category: expenseData.category,
-              comment: expenseData.comment,
+              data: expenseData,
             });
           }
         });
@@ -72,14 +71,18 @@ class Expense extends Component {
   }
 
   handleChange(event) {
+    const data = {...this.state.data};
+    data[event.target.name] = event.target.value;
     this.setState({
-      [event.target.name]: event.target.value,
+      data,
     });
   }
 
   handleGroupChange(event) {
+    const data = {...this.state.data};
+    data.category = "";
     this.setState({
-      category: "",
+      data,
     });
     this.handleChange(event);
   }
@@ -87,15 +90,15 @@ class Expense extends Component {
   async handleSumbit(event) {
     event.preventDefault();
     const recordData = {
-      date: this.state.date,
-      user: this.state.user,
-      value: parseInt(this.state.value),
-      group: this.state.group,
-      category: this.state.category,
-      comment: this.state.comment,
+      date: this.state.data.date,
+      user: this.state.data.user,
+      value: parseInt(this.state.data.value),
+      group: this.state.data.group,
+      category: this.state.data.category,
+      comment: this.state.data.comment,
     };
-    if (this.state.id) {
-      await updateRecord(EXPENSES_COLLECTION, this.state.id, recordData);
+    if (this.state.data.id) {
+      await updateRecord(EXPENSES_COLLECTION, this.state.data.id, recordData);
     } else {
       await createRecord(EXPENSES_COLLECTION, recordData);
     }
@@ -111,16 +114,16 @@ class Expense extends Component {
   }
 
   render() {
-    const users = this.state.users.map((user) => {
-      return (
-        <div key={"div_user_" + user} className="form-check">
-          <label>
-            <input key={"user_" + user} type="radio" id={"user_" + user} name="user" value={user} required checked={this.state.user === user} onChange={this.handleChange} className="form-check-input" />
-            {user}
-          </label>
-        </div>
-      );
-    });
+    // const users = this.state.users.map((user) => {
+    //   return (
+    //     <div key={"div_user_" + user} className="form-check">
+    //       <label>
+    //         <input key={"user_" + user} type="radio" id={"user_" + user} name="user" value={user} required checked={this.state.data.user === user} onChange={this.handleChange} className="form-check-input" />
+    //         {user}
+    //       </label>
+    //     </div>
+    //   );
+    // });
 
     const groups = this.state.groups.map((group) => {
       return (
@@ -128,7 +131,7 @@ class Expense extends Component {
       );
     });
 
-    const categories = this.state.categories.filter(category => category.group === this.state.group).map((category) => {
+    const categories = this.state.categories.filter(category => category.group === this.state.data.group).map((category) => {
       return (
         <option key={category.id} value={category.category}>{category.category}</option>
       );
@@ -139,57 +142,67 @@ class Expense extends Component {
         {this.state.users.length > 0 && this.state.groups > 0 ? <div className="spinner-border text-success" role="status">
           <span className="sr-only">Loading...</span>
         </div> :
-          <div className="row justify-content-center">
-            <form onSubmit={this.handleSumbit} className="col-sm-8 col-md-6 col-lg-4">
-              <fieldset>
-                <legend>{this.state.id ? 'Modificar gasto' : 'Nuevo gasto'}</legend>
-                <div className="form-group">
-                  <label>
-                    Fecha
-                    <input type="date" id="date" name="date" value={this.state.date} required onChange={this.handleChange} className="form-control" />
-                  </label>
-                </div>
-                <div className="form-group">
-                  Responsable
-                  {users}
-                </div>
-                <div className="form-group">
-                  <label>
-                    Valor
-                    <input type="number" id="value" name="value" value={this.state.value} step="1" required onChange={this.handleChange} className="form-control" />
-                  </label>
-                </div>
-                <div className="form-group">
-                  <label>
-                    Agrupador
-                    <select id="group" name="group" value={this.state.group} onChange={this.handleGroupChange} required className="form-control">
-                      <option value="">Seleccionar</option>
-                      {groups}
-                    </select>
-                  </label>
-                </div>
-                <div className="form-group">
-                  <label>
-                    Categoría
-                    <select id="category" name="category" value={this.state.category} onChange={this.handleChange} required className="form-control">
-                      <option value=""></option>
-                      {categories}
-                    </select>
-                  </label>
-                </div>
-                <div className="form-group">
-                  <label>
-                    Observaciones
-                    <textarea id="comment" name="comment" value={this.state.comment} rows="3" onChange={this.handleChange} className="form-control"></textarea>
-                  </label>
-                </div>
-                <div className="btn-group" role="group" aria-label="Form button group">
-                  <input type="submit" value="Guardar" className="btn btn-primary me-5" />
-                  <button onClick={this.handleCancel} className="btn btn-outline-secondary">Cancelar</button>
-                </div>
-              </fieldset>
-            </form>
-          </div>
+          <Form legend="gasto"
+          data={this.state.data}
+          onChange={this.handleChange}
+          onSubmit={this.handleSumbit}
+          onCancel={this.handleCancel}
+          users={this.state.users}
+          groups={groups}
+          categories={categories}
+          onGroupChange={this.handleGroupChange}
+          />
+          // <div className="row justify-content-center">
+          //   <form onSubmit={this.handleSumbit} className="col-sm-8 col-md-6 col-lg-4">
+          //     <fieldset>
+          //       <legend>{this.state.id ? 'Modificar gasto' : 'Nuevo gasto'}</legend>
+          //       <div className="form-group">
+          //         <label>
+          //           Fecha
+          //           <input type="date" id="date" name="date" value={this.state.date} required onChange={this.handleChange} className="form-control" />
+          //         </label>
+          //       </div>
+          //       <div className="form-group">
+          //         Responsable
+          //         {users}
+          //       </div>
+          //       <div className="form-group">
+          //         <label>
+          //           Valor
+          //           <input type="number" id="value" name="value" value={this.state.value} step="1" required onChange={this.handleChange} className="form-control" />
+          //         </label>
+          //       </div>
+          //       <div className="form-group">
+          //         <label>
+          //           Agrupador
+          //           <select id="group" name="group" value={this.state.group} onChange={this.handleGroupChange} required className="form-control">
+          //             <option value="">Seleccionar</option>
+          //             {groups}
+          //           </select>
+          //         </label>
+          //       </div>
+          //       <div className="form-group">
+          //         <label>
+          //           Categoría
+          //           <select id="category" name="category" value={this.state.category} onChange={this.handleChange} required className="form-control">
+          //             <option value=""></option>
+          //             {categories}
+          //           </select>
+          //         </label>
+          //       </div>
+          //       <div className="form-group">
+          //         <label>
+          //           Observaciones
+          //           <textarea id="comment" name="comment" value={this.state.comment} rows="3" onChange={this.handleChange} className="form-control"></textarea>
+          //         </label>
+          //       </div>
+          //       <div className="btn-group" role="group" aria-label="Form button group">
+          //         <input type="submit" value="Guardar" className="btn btn-primary me-5" />
+          //         <button onClick={this.handleCancel} className="btn btn-outline-secondary">Cancelar</button>
+          //       </div>
+          //     </fieldset>
+          //   </form>
+          // </div>
         }
       </div>
     );
