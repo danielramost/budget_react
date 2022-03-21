@@ -6,7 +6,7 @@ import {
   deleteRecord,
   deleteAllExpenses,
 } from "../services/firebase";
-import ExcelExporter from "../utils/excel-exporter";
+//import ExcelExporter from "../utils/excel-exporter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 

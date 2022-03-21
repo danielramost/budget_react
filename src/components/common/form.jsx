@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Input from "./input";
 import RadioGroup from "./radioGroup";
 import Textarea from "./textarea";
+import Select from "./select";
 
 class Form extends Component {
   renderInput(label, type, name, value, required, optionalParams) {
@@ -58,6 +59,19 @@ class Form extends Component {
     );
   }
 
+  renderSelect(label, name, value, required, options, onChange) {
+    return (
+      <Select
+        label={label}
+        name={name}
+        value={value}
+        required={required}
+        options={options}
+        onChange={onChange}
+      />
+    );
+  }
+
   render() {
     const {
       legend,
@@ -86,38 +100,22 @@ class Form extends Component {
             {this.renderInput("Valor", "number", "value", data.value, true, {
               step: "1",
             })}
-            <div className="form-group">
-              <label>
-                Agrupador
-                <select
-                  id="group"
-                  name="group"
-                  value={data.group}
-                  onChange={onGroupChange}
-                  required
-                  className="form-control"
-                >
-                  <option value="">Seleccionar</option>
-                  {groups}
-                </select>
-              </label>
-            </div>
-            <div className="form-group">
-              <label>
-                Categoría
-                <select
-                  id="category"
-                  name="category"
-                  value={data.category}
-                  onChange={onChange}
-                  required
-                  className="form-control"
-                >
-                  <option value=""></option>
-                  {categories}
-                </select>
-              </label>
-            </div>
+            {this.renderSelect(
+              "Agrupador",
+              "group",
+              data.group,
+              true,
+              groups,
+              onGroupChange
+            )}
+            {this.renderSelect(
+              "Categoría",
+              "category",
+              data.category,
+              true,
+              categories,
+              onChange
+            )}
             {this.renderTextarea(
               "Observaciones",
               "comment",
