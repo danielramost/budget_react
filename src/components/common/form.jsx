@@ -76,53 +76,15 @@ class Form extends Component {
     const {
       legend,
       data,
-      onChange,
       onSubmit,
-      users,
-      groups,
-      categories,
-      onGroupChange,
     } = this.props;
 
     return (
       <div className="row justify-content-center">
         <form onSubmit={onSubmit} className="col-sm-8 col-md-6 col-lg-4">
           <fieldset>
-            <legend>{(data.id ? "Modificar " : "Nuevo ") + legend}</legend>
-            {this.renderInput("Fecha", "date", "date", data.date, true)}
-            {this.renderRadioGroup(
-              "Responsable",
-              "user",
-              data.user,
-              true,
-              users
-            )}
-            {this.renderInput("Valor", "number", "value", data.value, true, {
-              step: "1",
-            })}
-            {this.renderSelect(
-              "Agrupador",
-              "group",
-              data.group,
-              true,
-              groups,
-              onGroupChange
-            )}
-            {this.renderSelect(
-              "Categoría",
-              "category",
-              data.category,
-              true,
-              categories,
-              onChange
-            )}
-            {this.renderTextarea(
-              "Observaciones",
-              "comment",
-              data.comment,
-              false,
-              { rows: "3" }
-            )}
+            <legend>{(data.id ? "Modificar " : "Crear ") + legend}</legend>
+            {this.props.children}
             {this.renderButtonGroup()}
           </fieldset>
         </form>

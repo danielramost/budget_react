@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { withRouter } from "react-router-dom";
-import Form from "./common/form";
+import ExpenseForm from "./expenseForm";
 import {
   db,
   createRecord,
@@ -135,14 +135,7 @@ class Expense extends Component {
     this.props.history.push("/");
   }
 
-  handleClearCategory() {
-    document.querySelector("#category").value = "";
-  }
-
   render() {
-    const categories = this.state.categories
-      .filter((category) => category.group === this.state.data.group);
-    
     return (
       <div className="container">
         {
@@ -152,15 +145,14 @@ class Expense extends Component {
               <span className="sr-only">Loading...</span>
             </div>
           ) : (
-            <Form
-              legend="gasto"
+            <ExpenseForm
               data={this.state.data}
               onChange={this.handleChange}
               onSubmit={this.handleSumbit}
               onCancel={this.handleCancel}
               users={this.state.users}
               groups={this.state.groups}
-              categories={categories}
+              categories={this.state.categories}
               onGroupChange={this.handleGroupChange}
             />
           )
