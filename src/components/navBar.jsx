@@ -59,14 +59,6 @@ class NavBar extends Component {
                     </a>
                     {/* <ExcelExporter data={expensesForDownload} fields={expensesFields} /> */}
                   </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Eliminar todo
-                    </a>
-                    {/* <button onClick={this.handleDeleteAll} className="btn btn-link">
-                      Eliminar todo
-                    </button> */}
-                  </li>
                   <li><hr className="dropdown-divider"/></li>
                   <li>
                     <NavLink className="dropdown-item" to="/logout">

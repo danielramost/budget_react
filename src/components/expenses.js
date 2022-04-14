@@ -67,8 +67,7 @@ class Expenses extends Component {
     }
   }
 
-  async handleDeleteAll(event) {
-    event.preventDefault();
+  async handleDeleteAll() {
     var confirmDeletion = window.confirm("¿Eliminar todos los gastos?");
     if (confirmDeletion) {
       this.setState({ loading: true });
@@ -200,6 +199,9 @@ class Expenses extends Component {
         <Link to="/expenses/new" className="btn btn-primary">
           Nuevo gasto
         </Link>
+        <button className="btn btn-secondary mx-4" onClick={this.handleDeleteAll}>
+          Eliminar todo
+        </button>
         <br />
         <br />
         {this.state.loading ? (
