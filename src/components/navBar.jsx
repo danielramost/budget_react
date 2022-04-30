@@ -3,17 +3,17 @@ import { NavLink } from "react-router-dom";
 
 class NavBar extends Component {
   state = {
-    showExtraMenu: false
+    isCollapsed: true
   };
 
   constructor() {
     super();
-    this.toggleExtraMenu = this.toggleExtraMenu.bind(this);
+    this.toggleCollapsed = this.toggleCollapsed.bind(this);
   }
 
-  toggleExtraMenu(e) {
+  toggleCollapsed(e) {
     e.preventDefault();
-    this.setState({ showExtraMenu: !this.state.showExtraMenu });
+    this.setState({ isCollapsed: !this.state.isCollapsed });
   }
 
   render() {
@@ -26,10 +26,11 @@ class NavBar extends Component {
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent"
+            onClick={this.toggleCollapsed}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <div className={`${this.state.isCollapsed ? "collapse" : ""} navbar-collapse`} id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <NavLink className="nav-link" to="/expenses">
