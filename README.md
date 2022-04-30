@@ -8,7 +8,7 @@ The app uses Firebase as backend.
 
 # Development environment setup
 
-Install Node 16 and then create the following file:
+Install **Node 16** and then create the following file:
 
 ```bash
 cd /path/of/repo

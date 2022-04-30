@@ -9,6 +9,7 @@ import {
 //import ExcelExporter from "../utils/excel-exporter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import ExpensesExporter from "./expensesExporter";
 
 class Expenses extends Component {
   constructor() {
@@ -184,24 +185,15 @@ class Expenses extends Component {
       );
     });
 
-    const expensesForDownload = expenses.slice().sort((a, b) => {
-      if (a["date"] < b["date"]) {
-        return -1;
-      } else if (a["date"] > b["date"]) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-
     return (
       <div className="container">
-        <Link to="/expenses/new" className="btn btn-primary">
+        <Link to="/expenses/new" className="btn btn-primary me-2">
           Nuevo gasto
         </Link>
-        <button className="btn btn-secondary mx-4" onClick={this.handleDeleteAll}>
+        <button className="btn btn-secondary mx-2" onClick={this.handleDeleteAll}>
           Eliminar todo
         </button>
+        <ExpensesExporter data={expenses} />
         <br />
         <br />
         {this.state.loading ? (
