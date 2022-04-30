@@ -41,30 +41,10 @@ class NavBar extends Component {
                   Categorías
                 </NavLink>
               </li>
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  onClick={this.toggleExtraMenu}
-                >
-                  Más
-                </a>
-                <ul className={`dropdown-menu ${this.state.showExtraMenu ? "show" : ""}`}>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Descargar
-                    </a>
-                  </li>
-                  <li><hr className="dropdown-divider"/></li>
-                  <li>
-                    <NavLink className="dropdown-item" to="/logout">
-                      Cerrar sesión
-                    </NavLink>
-                  </li>
-                </ul>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/logout">
+                  Cerrar sesión
+                </NavLink>
               </li>
             </ul>
           </div>
