@@ -57,7 +57,6 @@ class NavBar extends Component {
                     <a className="dropdown-item" href="#">
                       Descargar
                     </a>
-                    {/* <ExcelExporter data={expensesForDownload} fields={expensesFields} /> */}
                   </li>
                   <li><hr className="dropdown-divider"/></li>
                   <li>
