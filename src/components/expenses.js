@@ -187,10 +187,10 @@ class Expenses extends Component {
 
     return (
       <div className="container">
-        <Link to="/expenses/new" className="btn btn-primary me-2">
+        <Link to="/expenses/new" className="btn btn-primary m-2">
           Nuevo gasto
         </Link>
-        <button className="btn btn-secondary mx-2" onClick={this.handleDeleteAll}>
+        <button className="btn btn-secondary m-2" onClick={this.handleDeleteAll}>
           Eliminar todo
         </button>
         <ExpensesExporter data={expenses} />

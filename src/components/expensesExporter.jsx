@@ -30,7 +30,7 @@ const ExpensesExporter = ({data:allData}) => {
   }
 
   return (
-    <button className="btn btn-secondary mx-2" onClick={exportData}>
+    <button className="btn btn-secondary m-2" onClick={exportData}>
       Descargar
     </button>
   );

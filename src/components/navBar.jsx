@@ -32,17 +32,17 @@ class NavBar extends Component {
           </button>
           <div className={`${this.state.isCollapsed ? "collapse" : ""} navbar-collapse`} id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
+              <li className="nav-item my-2">
                 <NavLink className="nav-link" to="/expenses">
                   Gastos
                 </NavLink>
               </li>
-              <li className="nav-item">
+              <li className="nav-item my-2">
                 <NavLink className="nav-link" to="/categories">
                   Categorías
                 </NavLink>
               </li>
-              <li className="nav-item">
+              <li className="nav-item my-2">
                 <NavLink className="nav-link" to="/logout">
                   Cerrar sesión
                 </NavLink>
